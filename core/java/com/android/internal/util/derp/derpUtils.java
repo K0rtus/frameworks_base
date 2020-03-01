@@ -61,6 +61,18 @@ public class derpUtils {
     public static final String INTENT_SCREENSHOT = "action_handler_screenshot";
     public static final String INTENT_REGION_SCREENSHOT = "action_handler_region_screenshot";
 
+    private static IStatusBarService mStatusBarService = null;
+
+    private static IStatusBarService getStatusBarService() {
+        synchronized (derpUtils.class) {
+            if (mStatusBarService == null) {
+                mStatusBarService = IStatusBarService.Stub.asInterface(
+                        ServiceManager.getService("statusbar"));
+            }
+            return mStatusBarService;
+        }
+    }
+
     public static boolean isPackageInstalled(Context context, String pkg, boolean ignoreState) {
         if (pkg != null) {
             try {
@@ -192,75 +204,62 @@ public class derpUtils {
         return ctx.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
     }
 
+    public static void killForegroundApp() {
+        IStatusBarService service = getStatusBarService();
+        if (service != null) {
+            try {
+                service.killForegroundApp();
+            } catch (RemoteException e) {
+                // do nothing.
+            }
+        }
+    }
+
     public static void toggleCameraFlash() {
-        FireActions.toggleCameraFlash();
-    }
-
-    private static final class FireActions {
-        private static IStatusBarService mStatusBarService = null;
-
-        private static IStatusBarService getStatusBarService() {
-            synchronized (FireActions.class) {
-                if (mStatusBarService == null) {
-                    mStatusBarService = IStatusBarService.Stub.asInterface(
-                            ServiceManager.getService("statusbar"));
-                }
-                return mStatusBarService;
-            }
-        }
-
-        public static void toggleCameraFlash() {
-            IStatusBarService service = getStatusBarService();
-            if (service != null) {
-                try {
-                    service.toggleCameraFlash();
-                } catch (RemoteException e) {
-                    // do nothing.
-                }
-            }
-        }
-
-        // Toggle notifications panel
-        public static void toggleNotifications() {
-            IStatusBarService service = getStatusBarService();
-            if (service != null) {
-                try {
-                    service.togglePanel();
-                } catch (RemoteException e) {}
-            }
-        }
-
-        // Toggle qs panel
-        public static void toggleQsPanel() {
-            IStatusBarService service = getStatusBarService();
-            if (service != null) {
-                try {
-                    service.toggleSettingsPanel();
-                } catch (RemoteException e) {}
-            }
-        }
-
-        // Clear notifications
-        public static void clearAllNotifications() {
-            IStatusBarService service = getStatusBarService();
-            if (service != null) {
-                try {
-                    service.onClearAllNotifications(ActivityManager.getCurrentUser());
-                } catch (RemoteException e) {}
+        IStatusBarService service = getStatusBarService();
+        if (service != null) {
+            try {
+                service.toggleCameraFlash();
+            } catch (RemoteException e) {
+                // do nothing.
             }
         }
     }
 
+    // Clear notifications
     public static void clearAllNotifications() {
-        FireActions.clearAllNotifications();
+        IStatusBarService service = getStatusBarService();
+        if (service != null) {
+            try {
+                service.onClearAllNotifications(ActivityManager.getCurrentUser());
+            } catch (RemoteException e) {
+                // do nothing.
+            }
+        }
     }
 
-    public static void toggleQsPanel() {
-        FireActions.toggleQsPanel();
-    }
-
+    // Toggle notifications panel
     public static void toggleNotifications() {
-        FireActions.toggleNotifications();
+        IStatusBarService service = getStatusBarService();
+        if (service != null) {
+            try {
+                service.expandNotificationsPanel();
+            } catch (RemoteException e) {
+                // do nothing.
+            }
+        }
+    }
+
+    // Toggle qs panel
+    public static void toggleQsPanel() {
+        IStatusBarService service = getStatusBarService();
+        if (service != null) {
+            try {
+                service.expandSettingsPanel(null);
+            } catch (RemoteException e) {
+                // do nothing.
+            }
+        }
     }
 
     // Method to turn off the screen

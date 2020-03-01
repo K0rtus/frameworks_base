@@ -157,6 +157,7 @@ interface IStatusBarService
      * DerpFest
      */
     void toggleCameraFlash();
+    void killForegroundApp();
 
     /**
      * Used to block or unblock usage of gestural navigation
