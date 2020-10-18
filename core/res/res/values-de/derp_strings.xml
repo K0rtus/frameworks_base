@@ -19,4 +19,11 @@
     <string name="aerr_copy">URL für das Absturzprotokoll kopieren</string>
     <string name="url_copy_success">URL erfolgreich kopiert</string>
     <string name="url_copy_failed">Beim Hochladen des Protokolls zu dogbin ist ein Fehler aufgetreten</string>
+
+    <string name="reboot_to_recovery_title" translatable="false">Recovery</string>
+    <string name="reboot_to_recovery_message" translatable="false">Neustart zu Recovery</string>
+    <string name="reboot_to_bootloader_title" translatable="false">Bootloader</string>
+    <string name="reboot_to_bootloader_message" translatable="false">Neustart zu Bootloader</string>
+    <string name="reboot_title">Neustart</string>
+    <string name="reboot_message">System wird neugestartet</string>
 </resources>
