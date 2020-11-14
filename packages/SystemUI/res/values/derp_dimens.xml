@@ -16,7 +16,7 @@
 */
 -->
 <resources>
-
+    <!-- Qs visibility -->
     <dimen name="qs_tile_height_wo_label">64dp</dimen>
  
         <!-- Burn-in protection -->
@@ -26,4 +26,5 @@
     <!-- Padding after battery level text in status bar, QS, and Keyguard -->
     <dimen name="battery_level_padding_end">2dp</dimen>
 
+    <dimen name="screenrecord_dot_size">48dp</dimen>
 </resources>
